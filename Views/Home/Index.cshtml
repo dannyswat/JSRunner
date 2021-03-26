@@ -1,0 +1,75 @@
+﻿@{
+	ViewData["Title"] = "Javascript Library";
+}
+
+<div class="text-center input-group container-fluid">
+	<div id="script-area" class="col-md form-group">
+		<textarea id="script" class="form-control rounded-0" rows="20" placeholder="Javascript placed here..."></textarea>
+		<select id="scriptList" onchange="load()">
+			<option value="">Custom Script</option>
+		</select>
+		<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#saveScriptModel">Save</button>
+		<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#confirmDeleteModel">Delete</button>
+	</div>
+	<div id="input-area" class="col-md form-group">
+		<textarea id="inputText" class="form-control rounded-0" rows="20" placeholder="Input (calling input() can retrieve the input value)"></textarea>
+		<button onclick="execute()" class="btn btn-primary">Execute</button>
+	</div>
+	<div id="output-area" class="col-md form-group">
+		<textarea id="outputText" class="form-control rounded-0" rows="20" placeholder="Output (calling output(value) can display the output value)"></textarea>
+		<button onclick="clipboard('outputText')" class="btn btn-secondary">Copy</button>
+	</div>
+	<div id="preview-area" class="col-md form-group" style="display:none"></div>
+</div>
+<div class="modal fade" id="confirmDeleteModel" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModelLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">Delete Script</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				Are you confirm to delete the script? Deleted script cannot be recovered.
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-danger" onclick="deleteFile()">Confirm</button>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal fade" id="saveScriptModel" tabindex="-1" role="dialog" aria-labelledby="saveScriptModelLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">Save Script</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<form>
+					<div class="form-group">
+						<label for="scriptKey" class="col-form-label">Key:</label>
+						<input type="text" class="form-control" id="scriptKey" pattern="^[A-Za-z0-9_-]{1,30}$">
+					</div>
+					<div class="form-group">
+						<label for="scriptName" class="col-form-label">Name:</label>
+						<input type="text" class="form-control" id="scriptName">
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary" onclick="save()">Save</button>
+			</div>
+		</div>
+	</div>
+</div>
+@section Scripts {
+	<script type="text/javascript" src="/js/ClientScript.js">
+		
+	</script>
+}
