@@ -22,6 +22,14 @@ function output(value) {
 	document.getElementById('output-area').style.display = 'block';
 	return textarea('outputText', value);
 }
+
+function ifempty(value) {
+	document.getElementById('preview-area').style.display = 'none';
+	document.getElementById('output-area').style.display = 'block';
+	if (!textarea('outputText'))
+		return textarea('outputText', value);
+}
+
 function preview(value) {
 	var area = document.getElementById('preview-area');
 	area.style.display = 'block';
@@ -94,8 +102,14 @@ function save() {
 function execute() {
 	if (!script()) return;
 	try {
-		var result = (1, eval)(script());
-		if (result) output(result);
+		var result = (1, eval)(script()); // return a promise
+
+		if (result && result.then) {
+			result.then(function (result) {
+			}).fail(function (err) {
+				output(err);
+			});
+		}
 	} catch (e) {
 		output(e);
 	}
