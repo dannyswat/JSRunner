@@ -21,6 +21,12 @@
 						<li class="nav-item">
 							<a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Script</a>
 						</li>
+						@if (User.Identity.Name == "dannys") {<li class="nav-item">
+							<a class="nav-link text-dark" href="javascript:void(0)" data-toggle="modal" data-target="#createUserModel">Admin</a>
+						</li>}
+						<li class="nav-item">
+							<a class="nav-link text-dark" href="/" onclick="signout();return false">Logout</a>
+						</li>
 					</ul>
 				</div>
 			</div>

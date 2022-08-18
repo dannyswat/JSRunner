@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -49,7 +50,7 @@ namespace JSRunner
 
 				var basic = context.Request.Headers["Authorization"].ToString();
 
-				if (!basic.StartsWith("basic", StringComparison.CurrentCultureIgnoreCase))
+				if (!basic.StartsWith("basic", StringComparison.OrdinalIgnoreCase))
 				{
 					await returnChallenge(context);
 					return;
@@ -57,11 +58,21 @@ namespace JSRunner
 
 				basic = Encoding.ASCII.GetString(Convert.FromBase64String(basic.Substring(6)));
 
-				if (basic != "dannys:$1379popularit")
+				string username = basic.Split(':')[0];
+				string passwordFile = Path.Combine(env.ContentRootPath, "ClientScript", username + ".pwd");
+				if (!File.Exists(passwordFile))
+                {
+					await returnChallenge(context);
+					return;
+				}
+
+				if (basic != System.IO.File.ReadAllText(passwordFile))
 				{
 					await returnChallenge(context);
 					return;
 				}
+
+				context.User = new System.Security.Claims.ClaimsPrincipal(new System.Security.Principal.GenericIdentity(username));
 
 				await next();
 			});

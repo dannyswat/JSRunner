@@ -22,7 +22,7 @@ namespace JSRunner.Controllers
 
 		string getScriptPath()
 		{
-			return Path.Combine(hostingEnvironment.ContentRootPath, ScriptPath);
+			return Path.Combine(hostingEnvironment.ContentRootPath, ScriptPath, User.Identity.Name);
 		}
 
 		string getScriptFile(string key)

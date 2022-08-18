@@ -99,6 +99,22 @@ function save() {
 	});
 }
 
+function createUser() {
+	if (!textarea('username') || !textarea('password')) { console.log('Empty data'); return; }
+	$.ajax({
+		url: '/Home/CreateUser?username=' + encodeURIComponent(textarea('username')) + '&password=' + encodeURIComponent(textarea('password')),
+		method: 'POST'
+	}).done(function (res) {
+		window.location = window.location;
+	}).fail(function (res) {
+		console.log(res);
+	});
+}
+
+function signout() {
+	$.ajax({ url: '/Home/SignOut' }).fail(function (res) { window.location = window.location });
+}
+
 function execute() {
 	if (!script()) return;
 	try {
