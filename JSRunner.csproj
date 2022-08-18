@@ -4,4 +4,14 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="ClientScript\dannys.pwd" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="ClientScript\dannys.pwd">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>
