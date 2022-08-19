@@ -5,13 +5,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="ClientScript\dannys.pwd" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="ClientScript\dannys.pwd">
+    <None Update="ClientScript\dannys.pwd">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    </None>
   </ItemGroup>
 
 </Project>
