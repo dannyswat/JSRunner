@@ -37,15 +37,21 @@ function preview(value) {
 	area.innerHTML = value;
 }
 
-function list() {
-	$.getJSON('/ClientScript/List', function (res) {
-		var ddl = document.getElementById('scriptList');
-		for (var i in res) {
-			var opt = document.createElement('option');
-			opt.appendChild(document.createTextNode(res[i].name));
-			opt.value = res[i].key;
-			ddl.appendChild(opt);
-		}
+function list(defValue) {
+	return new Promise(function (resolve) {
+		$.getJSON('/ClientScript/List', function (res) {
+			var ddl = document.getElementById('scriptList');
+			var origValue = defValue || ddl.options[ddl.selectedIndex].value;
+			while (ddl.options.length > 1) ddl.options.remove(1);
+			for (var i in res) {
+				var opt = document.createElement('option');
+				opt.appendChild(document.createTextNode(res[i].name));
+				opt.value = res[i].key;
+				if (opt.value === origValue) opt.selected = true;
+				ddl.appendChild(opt);
+			}
+			resolve();
+		});
 	});
 }
 
@@ -60,59 +66,53 @@ function clipboard(id) {
 }
 
 function load() {
-	if (!template()) {
-		textarea('scriptKey', '');
-		textarea('scriptName', '');
-		return;
-	}
-	$.getJSON('/ClientScript/Get?key=' + template(), function (res) {
-		script(res.script);
-		textarea('scriptKey', res.key);
-		textarea('scriptName', res.name);
-	})
+	return new Promise(function (resolve) {
+		if (!template()) {
+			textarea('scriptKey', '');
+			textarea('scriptName', '');
+			resolve();
+			return;
+		}
+		$.getJSON('/ClientScript/Get?key=' + template(), function (res) {
+			script(res.script);
+			textarea('scriptKey', res.key);
+			textarea('scriptName', res.name);
+			resolve();
+		})
+	});
 }
 
 function deleteFile() {
-	if (!template()) return;
-	$.ajax({
-		url: '/ClientScript/Delete?key=' + template(),
-		method: 'DELETE'
-	}).done(function () {
-		window.location = window.location;
-	}).fail(function (res) {
-		console.log(res);
+	return new Promise(function (resolve) {
+		if (!template()) return;
+		$.ajax({
+			url: '/ClientScript/Delete?key=' + template(),
+			method: 'DELETE'
+		}).done(function () {
+			resolve();
+		}).fail(function (res) {
+			console.log(res);
+			resolve();
+		});
 	});
 }
 
 function save() {
-	if (!textarea('scriptKey') || !textarea('scriptName') || !script()) { console.log('Empty data'); return; }
-	$.ajax({
-		url: '/ClientScript/Save',
-		method: 'POST',
-		data: JSON.stringify({ Key: textarea('scriptKey'), Name: textarea('scriptName'), Script: script() }),
-		contentType: "application/json; charset=utf-8",
-		dataType: "json"
-	}).done(function (res) {
-		window.location = window.location;
-	}).fail(function (res) {
-		console.log(res);
+	return new Promise(function (resolve) {
+		if (!textarea('scriptKey') || !textarea('scriptName') || !script()) { console.log('Empty data'); return; }
+		$.ajax({
+			url: '/ClientScript/Save',
+			method: 'POST',
+			data: JSON.stringify({ Key: textarea('scriptKey'), Name: textarea('scriptName'), Script: script() }),
+			contentType: "application/json; charset=utf-8",
+			dataType: "json"
+		}).done(function (res) {
+			resolve();
+		}).fail(function (res) {
+			console.log(res);
+			resolve();
+		});
 	});
-}
-
-function createUser() {
-	if (!textarea('username') || !textarea('password')) { console.log('Empty data'); return; }
-	$.ajax({
-		url: '/Home/CreateUser?username=' + encodeURIComponent(textarea('username')) + '&password=' + encodeURIComponent(textarea('password')),
-		method: 'POST'
-	}).done(function (res) {
-		window.location = window.location;
-	}).fail(function (res) {
-		console.log(res);
-	});
-}
-
-function signout() {
-	$.ajax({ url: '/Home/SignOut' }).fail(function (res) { window.location = window.location });
 }
 
 function execute() {
