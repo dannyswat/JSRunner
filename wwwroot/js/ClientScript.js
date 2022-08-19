@@ -92,6 +92,7 @@ function deleteFile() {
 			resolve();
 		}).fail(function (res) {
 			console.log(res);
+			alert(res);
 			resolve();
 		});
 	});
@@ -109,7 +110,7 @@ function save() {
 		}).done(function (res) {
 			resolve();
 		}).fail(function (res) {
-			console.log(res);
+			alert(res);
 			resolve();
 		});
 	});
@@ -123,11 +124,13 @@ function execute() {
 		if (result && result.then) {
 			result.then(function (result) {
 			}).fail(function (err) {
-				output(err);
+				console.log(err);
+				alert(err);
 			});
 		}
 	} catch (e) {
-		output(e);
+		console.log(e);
+		alert(e);
 	}
 }
 
