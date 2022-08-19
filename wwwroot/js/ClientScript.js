@@ -17,10 +17,10 @@ function script(value) {
 function input(value) {
 	return textarea('inputText', value);
 }
-function output(value) {
+function output(value, append) {
 	document.getElementById('preview-area').style.display = 'none';
 	document.getElementById('output-area').style.display = 'block';
-	return textarea('outputText', value);
+	return textarea('outputText', append ? textarea('outputText') + value : value);
 }
 
 function ifempty(value) {
