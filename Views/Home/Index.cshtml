@@ -12,7 +12,7 @@
 <div class="text-center input-group container-fluid">
 	<div id="script-area" class="col-md form-group text-left">
 		<textarea id="script" class="form-control rounded-0" rows="20" placeholder="Javascript placed here..."></textarea>
-		<select id="scriptList" onchange="load()">
+		<select id="scriptList" onchange="loading(document.getElementById('btnExecute'), load)">
 			<option value="">Custom Script</option>
 		</select>
 		<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#saveScriptModel">Save</button>
@@ -20,7 +20,7 @@
 	</div>
 	<div id="input-area" class="col-md form-group">
 		<textarea id="inputText" class="form-control rounded-0" rows="20" placeholder="Input (calling input() can retrieve the input value)"></textarea>
-		<button onclick="execute()" class="btn btn-primary">Execute</button>
+		<button onclick="execute()" id="btnExecute" class="btn btn-primary">Execute</button>
 	</div>
 	<div id="output-area" class="col-md form-group">
 		<textarea id="outputText" class="form-control rounded-0" rows="20" placeholder="Output (calling output(value) can display the output value)"></textarea>
