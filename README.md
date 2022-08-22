@@ -9,7 +9,11 @@ A simple web app to run javascript locally with online script storage. Currently
 
 ## Change log
 
-19 Aug 2022 - Added multi-user support
+19 Aug 2022 
+- Added multi-user support, each user has a separated folder
+- Avoid reloading page
+- Add loading indicator to give better experience
+- Replace script textarea with a javascript code editor
 
 ## Demo
 
